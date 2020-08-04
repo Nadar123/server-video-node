@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const postRoutes = require('./routes/posts.routes');
 const categoriesRoutes = require('./routes/categories.routes');
+const userRoutes = require('./routes/user.routes');
+const cors = require("cors");
 const app = express();
 
 mongoose.connect("mongodb+srv://nadar123:nadar123@cluster0.crmea.mongodb.net/node-movies?retryWrites=true&w=majority")
@@ -16,24 +18,12 @@ mongoose.connect("mongodb+srv://nadar123:nadar123@cluster0.crmea.mongodb.net/nod
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
-  );
-  next();
-});
-
+app.use(cors());
 
 
 app.use('/api/movies', postRoutes);
-
 app.use('/api/categories', categoriesRoutes);
+app.use('/api/user', userRoutes);
 
 
 
