@@ -3,9 +3,9 @@ const router = express.Router();
 
 // models
 const Post = require('../models/post');
+const checkAuth = require('../middleware/check');
 
-
-router.post('/',async (req, res, next) => {
+router.post('/',checkAuth, async (req, res, next) => {
   try {
     const post = await new Post({
       title: req.body.title,
@@ -40,7 +40,17 @@ router.get('/' ,async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async(req,res, next) => {
+router.get("/:id", (req, res, next) => {
+  Post.findById(req.params.id).then(post => {
+    if(post) {
+      res.status(200).json(post);
+    } else {
+      res.status(404).json({message: "post not found"});
+    }
+  });
+});
+
+router.delete('/:id', checkAuth, async(req,res, next) => {
   Post.deleteOne({_id:req.params.id})
   .then(result => {
     console.log(result);
