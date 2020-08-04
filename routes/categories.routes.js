@@ -19,6 +19,7 @@ router.post('/', async (req, res, next) => {
     res.status(500).send('get server error')
   }
 });
+
 router.get('/', async (req, res, next) => {
   try {
     const category = await Category.find({});
